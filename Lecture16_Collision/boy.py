@@ -3,6 +3,7 @@
 from pico2d import get_time, load_image, SDL_KEYDOWN, SDL_KEYUP, SDLK_SPACE, SDLK_LEFT, SDLK_RIGHT, load_font, \
     draw_rectangle
 
+from Lecture16_Collision.game_world import add_collision_pair
 from ball import Ball
 import game_world
 import game_framework
@@ -160,6 +161,8 @@ class Boy:
             self.ball_count -= 1
             ball = Ball(self.x, self.y, self.face_dir*10)
             game_world.add_object(ball)
+            game_world.add_collision_pair('zombie:ball',None, ball)
+
 
     def get_bb(self):
         # 네개의 값, x1,y1,x2,y2
@@ -170,4 +173,9 @@ class Boy:
         # fill here
         if group == 'boy:ball':
             self.ball_count += 1
+        elif group == 'boy:zombie':
+            print('Game Over')
+            exit(0)
+
+
         pass

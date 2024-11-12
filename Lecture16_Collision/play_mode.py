@@ -9,7 +9,6 @@ from grass import Grass
 from boy import Boy
 from ball import Ball
 from zombie import Zombie
-
 # boy = None
 
 def handle_events():
@@ -25,6 +24,7 @@ def handle_events():
 def init():
     global boy
     global balls
+    global zombies
 
     grass = Grass()
     game_world.add_object(grass, 0)
@@ -32,23 +32,29 @@ def init():
     boy = Boy()
     game_world.add_object(boy, 1)
 
-    balls = [Ball(random.randint(100, 1500), 60, 0) for _ in range(30)]
+    balls = [Ball(random.randint(100, 1500), 60, 0) for i in range(30)]
     game_world.add_objects(balls,1) # 게임 월드에 추가
 
+    # 좀비 생성
+    zombies = [Zombie() for i in range(5)]
+    game_world.add_objects(zombies)
+
+    for zombie in zombies:
+        add_collision_pair('zombie:ball', zombie, None)
+        add_collision_pair('boy:zombie', None, zombie)
     # 충돌 대상들을 등록
     # fill here
+    add_collision_pair('boy:zombie', boy, None)
+
     add_collision_pair('boy:ball', boy, None)
     for ball in balls:
         add_collision_pair('boy:ball', None, ball)
 
+
+
     # {'boy:ball' : [[boy], [ball1,ball2,ball3,....,ball30]]}
 
     # fill here
-
-    #좀비 생성
-    zombies = [Zombie() for _ in range(5)]
-    game_world.add_objects(zombies,1)
-
 
 
 
